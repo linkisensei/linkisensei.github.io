@@ -1,0 +1,100 @@
+:root {
+  --font-body: 'Open Sans', sans-serif;
+  --font-heading: 'Geo', sans-serif;
+  --accent-rgb: 153,1,1;
+  --accent-opacity: 0.8;
+  --unknown-color: #111;
+  --cursor-grab: grab;
+  --cursor-grabbing: grabbing;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  cursor: var(--cursor-grab);
+  font-family: var(--font-body);
+  background: #000;
+}
+#map-container {
+  position: relative;
+  width: 100%; height: 100%; overflow: hidden;
+}
+#scene {
+  position: absolute;
+  top: 0; left: 0;
+  width: 7293px; height: 3646px;
+  background: url('img/bg.jpg') no-repeat center center;
+  background-size: cover;
+  cursor: inherit;
+}
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background-color: #666;
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  background-blend-mode: multiply;
+  box-shadow: 0 0 4px rgba(var(--accent-rgb), 0.3);
+}
+.marker {
+  position: absolute;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+#tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(var(--accent-rgb), var(--accent-opacity));
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  display: none;
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
+}
+#modalOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+#modal {
+  background: rgba(var(--accent-rgb), var(--accent-opacity));
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  color: #fff;
+  font-family: var(--font-body);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  text-align: left;
+}
+#modal h2 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+#modalContent p { margin-bottom: 8px; }
+#modalClose {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}

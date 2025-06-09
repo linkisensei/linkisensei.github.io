@@ -1,293 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planet Map</title>
-  <!-- Sci-Fi Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Open+Sans:wght@300;700;800&display=swap" rel="stylesheet">
-  <!-- Font Awesome 4 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    /* Global settings */
-    :root {
-      --font-body: 'Open Sans', sans-serif;
-      --font-heading: 'Geo', sans-serif;
-      --accent-rgb: 153,1,1;          /* Sci-fi accent red */
-      --accent-opacity: 0.8;          /* Opacity for tooltips and modals */
-      --unknown-color: #111;          /* Color for unknown planets */
-      --cursor-grab: grab;
-      --cursor-grabbing: grabbing;
-    }
-    /* Basic reset */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100vw; height: 100vh;
-      overflow: hidden;
-      cursor: var(--cursor-grab);
-      font-family: var(--font-body);
-      background: #000;
-    }
-    #map-container {
-      position: relative;
-      width: 100%; height: 100%; overflow: hidden;
-    }
-    #scene {
-      position: absolute;
-      top: 0; left: 0;
-      width: 9725px; height: 4862px;
-      background: url('img/bg.jpg') no-repeat center center;
-      background-size: cover;
-      cursor: inherit;
-    }
-    .planet {
-      position: absolute;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      background-color: #666;
-      background-repeat: repeat;
-      background-size: 128px 128px;
-      background-blend-mode: multiply;
-      box-shadow: 0 0 4px rgba(var(--accent-rgb), 0.3);
-    }
-    /* Planet icon wrapper */
-    .planet-icon {
-      position: absolute;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: rgba(var(--accent-rgb), var(--accent-opacity));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #fff;
-      transform: translate(-50%, -50%);
-    }
-    /* Sci-fi tooltip styling */
-    #tooltip {
-      position: absolute;
-      pointer-events: none;
-      background: rgba(var(--accent-rgb), var(--accent-opacity));
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 14px;
-      display: none;
-      white-space: nowrap;
-      z-index: 100;
-      box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
-    }
-    /* Modal overlay */
-    #modalOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-    /* Modal content */
-    #modal {
-      background: rgba(var(--accent-rgb), var(--accent-opacity));
-      border-radius: 8px;
-      padding: 20px;
-      max-width: 400px;
-      width: 90%;
-      color: #fff;
-      font-family: var(--font-body);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.7);
-      text-align: left;
-    }
-    #modal h2 {
-      font-family: var(--font-heading);
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-    #modalContent p {
-      margin-bottom: 8px;
-    }
-    #modalClose {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa (Três caminhos para Ascensão)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Open+Sans:wght@300;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="map-container">
+<div id="map-container">
     <div id="scene"></div>
     <div id="tooltip"></div>
-  </div>
-  <div id="modalOverlay">
+</div>
+
+<div id="modalOverlay">
     <div id="modal">
-      <button id="modalClose">&times;</button>
-      <h2 id="modalTitle"></h2>
-      <div id="modalContent"></div>
+    <button id="modalClose">&times;</button>
+    <h2 id="modalTitle"></h2>
+    <div id="modalContent"></div>
     </div>
-  </div>
-  <script>
-    const scene = document.getElementById('scene');
-    const container = document.getElementById('map-container');
-    const tooltip = document.getElementById('tooltip');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const modalClose = document.getElementById('modalClose');
-    const TEXTURE_COUNT = 62;
-    let planets = [];
-    let isDragging = false;
-    let dragStart = { x: 0, y: 0 };
-    let offset = { x: 0, y: 0 };
+</div>
 
-    /**
-     * Centers the map within the container
-     */
-    function centerMap() {
-      const cw = container.clientWidth, ch = container.clientHeight;
-      const sw = scene.offsetWidth, sh = scene.offsetHeight;
-      offset.x = (cw - sw) / 2;
-      offset.y = (ch - sh) / 2;
-      const minX = cw - sw, minY = ch - sh;
-      offset.x = Math.min(Math.max(offset.x, minX), 0);
-      offset.y = Math.min(Math.max(offset.y, minY), 0);
-      scene.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
-    }
-
-    /**
-     * Generates a simple hash code from a string
-     */
-    function hashCode(str) {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
-      }
-      return Math.abs(hash);
-    }
-
-    // Load planet data
-    fetch('data/planets.json')
-      .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-      .then(data => { planets = data; renderPlanets(); centerMap(); })
-      .catch(err => console.error('Error loading planets.json:', err));
-
-    /**
-     * Renders planets on the map
-     */
-    function renderPlanets() {
-      planets.forEach(p => {
-        if (!p.visible && !p.unknown) return;
-        // Create planet element
-        const el = document.createElement('div');
-        el.className = 'planet';
-        el.style.width = el.style.height = `${p.radius * 2}px`;
-        el.style.left = `${p.x}px`;
-        el.style.top = `${p.y}px`;
-
-        // Optional border
-        if (p.hasAnchor && p.borderColor) {
-          el.style.border = `2px solid ${p.borderColor}`;
-        }
-
-        // Apply unknown style or base + texture
-        if (p.unknown) {
-          el.style.backgroundColor = 'var(--unknown-color)';
-        } else {
-          el.style.backgroundColor = p.color;
-          const idx = (hashCode(p.id) % TEXTURE_COUNT) + 1;
-          const url = encodeURI(`img/textures/t (${idx}).png`);
-          const highlight = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 70%)`;
-          const shadow = `radial-gradient(circle at 70% 70%, rgba(0,0,0,0.4), transparent 70%)`;
-          el.style.backgroundImage = `${highlight}, ${shadow}, url("${url}")`;
-          el.style.backgroundBlendMode = 'screen, multiply, multiply';
-          el.style.backgroundRepeat = 'repeat';
-          el.style.backgroundSize = '128px 128px';
-        }
-
-        // Tooltip handlers
-        el.addEventListener('mouseenter', () => {
-          tooltip.textContent = p.unknown ? '???' : p.name;
-          tooltip.style.display = 'block';
-        });
-        el.addEventListener('mousemove', e => {
-          tooltip.style.left = `${e.pageX + 10}px`;
-          tooltip.style.top = `${e.pageY + 10}px`;
-        });
-        el.addEventListener('mouseleave', () => tooltip.style.display = 'none');
-
-        // Modal click for known planets
-        if (!p.unknown) {
-          el.addEventListener('click', e => { e.stopPropagation(); showModal(p); });
-        }
-
-        // Add planet to scene
-        scene.appendChild(el);
-
-        // Add icon if specified
-        if (p.icon) {
-          const iconEl = document.createElement('div');
-          iconEl.className = 'planet-icon';
-          iconEl.innerHTML = `<i class="fa ${p.icon}"></i>`;
-          // position icon to the right of planet
-          const offsetX = p.x + p.radius + 12;
-          const offsetY = p.y;
-          iconEl.style.left = `${offsetX}px`;
-          iconEl.style.top = `${offsetY}px`;
-          scene.appendChild(iconEl);
-        }
-      });
-    }
-
-    /**
-     * Displays modal with planet details
-     */
-    function showModal(p) {
-      modalTitle.textContent = p.name;
-      modalContent.innerHTML = `
-        <p>${p.info}</p>
-        <p><strong>Race:</strong> ${p.race}</p>
-        <p><strong>Owner:</strong> ${p.owner}</p>
-      `;
-      modalOverlay.style.display = 'flex';
-    }
-
-    // Close modal handlers
-    modalClose.addEventListener('click', () => modalOverlay.style.display = 'none');
-    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) modalOverlay.style.display = 'none'; });
-
-    // Drag-to-pan functionality
-    container.addEventListener('mousedown', e => {
-      if (e.target.classList.contains('planet') || e.target.closest('.planet-icon')) return;
-      isDragging = true;
-      dragStart.x = e.clientX - offset.x;
-      dragStart.y = e.clientY - offset.y;
-      document.body.style.cursor = 'var(--cursor-grabbing)';
-    });
-    document.addEventListener('mousemove', e => {
-      if (!isDragging) return;
-      offset.x = e.clientX - dragStart.x;
-      offset.y = e.clientY - dragStart.y;
-      const minX = container.clientWidth - scene.offsetWidth;
-      const minY = container.clientHeight - scene.offsetHeight;
-      offset.x = Math.min(Math.max(offset.x, minX), 0);
-      offset.y = Math.min(Math.max(offset.y, minY), 0);
-      scene.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
-    });
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      document.body.style.cursor = 'var(--cursor-grab)';
-    });
-  </script>
+<script src="ui.js"></script>
 </body>
 </html>

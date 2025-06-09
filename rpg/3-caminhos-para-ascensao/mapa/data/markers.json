@@ -1,0 +1,11 @@
+[
+  {
+    "id": "abc133",
+    "x": 300,
+    "y": 500,
+    "color": "#FF4500",
+    "icon" : "fa-star",
+    "title" : "Âncora",
+    "visible" : true
+  }
+]
