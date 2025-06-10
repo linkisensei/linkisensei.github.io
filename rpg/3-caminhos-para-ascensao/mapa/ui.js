@@ -243,13 +243,15 @@
      */
     function onTouchStart(e) {
     if (e.target.closest('.planet, .marker')) return;
-    e.preventDefault();
+        e.preventDefault();
 
-    isDragging = true;
-    const touch = e.touches[0];
-    dragStart.x = touch.clientX - offset.x;
-    dragStart.y = touch.clientY - offset.y;
-    document.body.style.cursor = 'var(--cursor-grabbing)';
+        tooltip.style.display = 'none'; // Hide tooltip
+
+        isDragging = true;
+        const touch = e.touches[0];
+        dragStart.x = touch.clientX - offset.x;
+        dragStart.y = touch.clientY - offset.y;
+        document.body.style.cursor = 'var(--cursor-grabbing)';
     }
 
     /**
