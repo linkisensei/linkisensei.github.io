@@ -30,13 +30,18 @@
         // Modal close handlers
         modalClose.addEventListener('click', hideModal);
         modalOverlay.addEventListener('click', e => {
-        if (e.target === modalOverlay) hideModal();
+            if (e.target === modalOverlay) hideModal();
         });
 
         // Drag-to-pan
         container.addEventListener('mousedown', onMouseDown);
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
+
+        // Mobile Drag-to-pan
+        container.addEventListener('touchstart', onTouchStart, { passive: false });
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+        document.addEventListener('touchend', onTouchEnd);
     }
 
     /**
@@ -230,6 +235,50 @@
         offset.y = Math.min(Math.max(offset.y, minY), 0);
 
         scene.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
+    }
+
+
+    /**
+     * Touch start handler for pan
+     */
+    function onTouchStart(e) {
+    if (e.target.closest('.planet, .marker')) return;
+    e.preventDefault();
+
+    isDragging = true;
+    const touch = e.touches[0];
+    dragStart.x = touch.clientX - offset.x;
+    dragStart.y = touch.clientY - offset.y;
+    document.body.style.cursor = 'var(--cursor-grabbing)';
+    }
+
+    /**
+     * Touch move handler for pan
+     */
+    function onTouchMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        offset.x = touch.clientX - dragStart.x;
+        offset.y = touch.clientY - dragStart.y;
+
+        // enforce boundaries
+        const minX = container.clientWidth - scene.offsetWidth;
+        const minY = container.clientHeight - scene.offsetHeight;
+        offset.x = Math.min(Math.max(offset.x, minX), 0);
+        offset.y = Math.min(Math.max(offset.y, minY), 0);
+
+        scene.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
+    }
+
+    /**
+     * Touch end handler to end pan
+     */
+    function onTouchEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        document.body.style.cursor = 'var(--cursor-grab)';
     }
 
     /**
