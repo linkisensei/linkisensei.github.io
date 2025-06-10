@@ -3,6 +3,7 @@
   --font-heading: 'Geo', sans-serif;
   --accent-rgb: 153,1,1;
   --accent-opacity: 0.8;
+  --atmosfere-glow-rgb: 250,250,250;
   --unknown-color: #111;
   --cursor-grab: grab;
   --cursor-grabbing: grabbing;
@@ -36,7 +37,9 @@ html, body {
   background-repeat: repeat;
   background-size: 128px 128px;
   background-blend-mode: multiply;
-  box-shadow: 0 0 4px rgba(var(--accent-rgb), 0.3);
+  /* box-shadow: 0 0 4px rgba(var(--accent-rgb), 0.3); */
+  box-shadow: 0 0 6px rgba(var(--atmosfere-glow-rgb), 0.3), 0 0 12px rgba(var(--accent-rgb), 0.3);
+  /* box-shadow: 0 0 8px rgba(var(--atmosfere-glow-rgb), 0.6); */
 }
 .marker {
   position: absolute;
@@ -46,6 +49,12 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+.marker i {
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #tooltip {
   position: absolute;

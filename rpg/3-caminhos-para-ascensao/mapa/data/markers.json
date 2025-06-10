@@ -1,11 +1,26 @@
 [
   {
-    "id": "abc133",
-    "x": 300,
-    "y": 500,
+    "x": 4872,
+    "y": 2211,
     "color": "#FF4500",
-    "icon" : "fa-star",
-    "title" : "Âncora",
+    "icon" : "fa-adn",
+    "title" : "Âncora para Arton",
+    "visible" : true
+  },
+  {
+    "x": 2098,
+    "y": 1695,
+    "color": "#FF4500",
+    "icon" : "fa-users",
+    "title" : "Adam e Eydrian",
+    "visible" : true
+  },
+  {
+    "x": 5791,
+    "y": 104,
+    "color": "#FF4500",
+    "icon" : "fa-users",
+    "title" : "Girrar e Morgana",
     "visible" : true
   }
 ]
