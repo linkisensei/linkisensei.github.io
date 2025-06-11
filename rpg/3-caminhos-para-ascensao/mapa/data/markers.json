@@ -12,14 +12,14 @@
     "y": 1695,
     "color": "#FF4500",
     "icon" : "fa-users",
-    "title" : "Adam e Eydrian",
+    "title" : "Adam, Eidryan e Girrar",
     "visible" : true
   },
   {
-    "x": 5791,
-    "y": 104,
+    "x": 3464,
+    "y": 2161,
     "color": "#FF4500",
-    "icon" : "fa-users",
+    "icon" : "fa-star",
     "title" : "Girrar e Morgana",
     "visible" : true
   }
