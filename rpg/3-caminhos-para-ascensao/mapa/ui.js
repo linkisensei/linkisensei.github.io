@@ -49,11 +49,11 @@
      */
     function loadData() {
         Promise.all([
-        fetch('data/planets.json').then(res => {
+        fetch(`data/planets.json?v=${Date.now()}`, {cache: 'no-store'}).then(res => {
             if (!res.ok) return Promise.reject(res.statusText);
             return res.json();
         }),
-        fetch('data/markers.json').then(res => {
+        fetch(`data/markers.json?v=${Date.now()}`, {cache: 'no-store'}).then(res => {
             if (!res.ok) return Promise.reject(res.statusText);
             return res.json();
         })
