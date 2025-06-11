@@ -165,7 +165,7 @@
     "name": "Tassalon",
     "info": "Planeta capital dos Nox. Hoje, serve como campo de refugiados devido ao número reduzido de Nox.",
     "visible": true,
-    "unknown" : true,
+    "unknown" : false,
     "race": "Nox"
   },
   {
