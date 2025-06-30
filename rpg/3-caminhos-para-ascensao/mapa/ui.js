@@ -59,11 +59,11 @@
         })
         ])
         .then(([planetData, markerData]) => {
-        planets = planetData;
-        markers = markerData;
-        renderPlanets();
-        renderMarkers();
-        centerMap();
+            planets = planetData;
+            markers = markerData;
+            renderPlanets();
+            renderMarkers();
+            centerMap();
         })
         .catch(err => console.error('Error loading data:', err));
     }
@@ -95,8 +95,8 @@
     function hashCode(str) {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0; // force 32-bit int
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0; // force 32-bit int
         }
         return Math.abs(hash);
     }

@@ -1352,5 +1352,18 @@
     "visible": true,
     "unknown": true,
     "race": ""
+  },
+  {
+    "id": "i9h4uw",
+    "x": 5694,
+    "y": 3193,
+    "radius": 23,
+    "color": "#a3e603",
+    "borderColor": null,
+    "name": "Lumina Prime",
+    "info": "Planeta artificial criado pelos Eridans. Atualmente sob ocupação dos Khorz'erans",
+    "visible": true,
+    "unknown": true,
+    "race": "Khorz'eran"
   }
 ]

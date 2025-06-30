@@ -8,19 +8,29 @@
     "visible" : true
   },
   {
-    "x": 2098,
-    "y": 1695,
+    "x": 2500,
+    "y": 1787,
     "color": "#FF4500",
     "icon" : "fa-users",
-    "title" : "Adam, Eidryan e Girrar",
+    "title" : "Grupo",
     "visible" : true
   },
+  
   {
     "x": 3464,
     "y": 2161,
     "color": "#FF4500",
     "icon" : "fa-star",
     "title" : "Arma Eridan",
+    "visible" : true
+  },
+  {
+    "x": 4560,
+    "y": 3200,
+    "color": "#db6225",
+    "icon" : "fa-joomla",
+    "title" : "Chronus Sigma",
+    "description" : "Antiga estação espacial Khorz'eran que atualmente se encontra sob domínio Nox",
     "visible" : true
   }
 ]
